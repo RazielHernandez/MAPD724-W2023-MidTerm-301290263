@@ -4,7 +4,8 @@ import SpriteKit
 class Player : GameObject{
     
     init(){
-        super.init(imageString: "plane", initialScale: 2.0)
+        super.init(imageString: "plane", initialScale: 1.0)
+        zRotation = -Double.pi / 2
         Start()
     }
     
@@ -23,25 +24,25 @@ class Player : GameObject{
     }
     
     override func CheckBound() {
-        
-        //left boundary
-        if (position.x <= -255){
-            position.x = -255
+        //down boundary
+        if (position.y <= -140){
+            position.y = -140
         }
         
-        //right boundary
+        //top boundary
         
-        if (position.x >= 255){
-            position.x = 255
+        if (position.y >= 140){
+            position.y = 140
         }
         
     }
     
     override func Reset() {
-        position.y = -500
+        position.x = -340
     }
     
     func TouchMove(newPos: CGPoint){
+        
         position = newPos
     }
 }

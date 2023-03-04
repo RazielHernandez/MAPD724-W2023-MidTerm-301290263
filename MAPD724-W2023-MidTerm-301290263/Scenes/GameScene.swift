@@ -10,72 +10,66 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    var entities = [GKEntity]()
-    var graphs = [String : GKGraph]()
-    
-    private var lastUpdateTime : TimeInterval = 0
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    var ocean1: Ocean?
+    var ocean2: Ocean?
+    var player: Player?
+    var island: Islands?
     
     override func sceneDidLoad() {
 
-        self.lastUpdateTime = 0
+        name = "GAME"
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+        // add the first ocean to the Scene
+        ocean1 = Ocean()
+        ocean1?.Reset()
+        addChild(ocean1!)
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        // add the second ocean to the scene
+        ocean2 = Ocean()
+        ocean2?.position.y = -627
+        addChild(ocean2!)
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
+        player = Player()
+        addChild(player!)
+        
+        // add the island to the Scene
+        island = Islands()
+        addChild(island!)
+        
+        // Get main screen bounds
+        let screenSize: CGRect = UIScreen.main.bounds
+
+        let screenWidth = screenSize.width
+        let screenHeight = screenSize.height
+
+        print("Screen width = \(screenWidth), screen height = \(screenHeight)")
+        
+        
     }
     
     
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
+    func touchDown(atPoint pos : CGPoint)
+    {
+        player?.TouchMove(newPos: CGPoint(x: -340, y: pos.y))
     }
     
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
+    func touchMoved(toPoint pos : CGPoint)
+    {
+        player?.TouchMove(newPos: CGPoint(x: -340, y: pos.y))
     }
     
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
+    func touchUp(atPoint pos : CGPoint)
+    {
+        player?.TouchMove(newPos: CGPoint(x: -340, y: pos.y))
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
-        
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?)
+    {
         for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
     }
     
@@ -91,19 +85,10 @@ class GameScene: SKScene {
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
         
-        // Initialize _lastUpdateTime if it has not already been
-        if (self.lastUpdateTime == 0) {
-            self.lastUpdateTime = currentTime
-        }
+        ocean1?.Update()
+        ocean2?.Update()
         
-        // Calculate time since last update
-        let dt = currentTime - self.lastUpdateTime
-        
-        // Update entities
-        for entity in self.entities {
-            entity.update(deltaTime: dt)
-        }
-        
-        self.lastUpdateTime = currentTime
+        player?.Update()
+        island?.Update()
     }
 }
