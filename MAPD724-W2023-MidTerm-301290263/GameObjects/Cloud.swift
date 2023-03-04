@@ -4,7 +4,7 @@ import SpriteKit
 class Cloud : GameObject{
     
     init(){
-        super.init(imageString: "cloud", initialScale: 1.0)
+        super.init(imageString: "cloud", initialScale: 0.5)
         Start()
     }
     
@@ -25,22 +25,21 @@ class Cloud : GameObject{
     }
     
     override func CheckBound() {
-        if (position.y <= -902){
+        if (position.x <= -560){
             Reset()
         }
         
     }
     
     override func Reset() {
-        verticalSpeed = CGFloat((randomSource?.nextUniform())! * 5.0) + 5.0
+        horizontalSpeed = CGFloat((randomSource?.nextUniform())! * 5.0) + 5.0
         
-        horizontalSpeed = CGFloat((randomSource?.nextUniform())! * 4.0) - 2.0
+        verticalSpeed = CGFloat((randomSource?.nextUniform())! * 4.0) - 2.0
         
-        //position.y = 876
-        let randomX: Int = (randomSource?.nextInt(upperBound: 524))! - 262
+        let randomX: Int = (randomSource?.nextInt(upperBound: 30))! + 560
         position.x = CGFloat(randomX)
         
-        let randomY: Int = (randomSource?.nextInt(upperBound: 30))! + 902
+        let randomY: Int = (randomSource?.nextInt(upperBound: 280))! - 140
         position.y = CGFloat(randomY)
         
         isColliding = false
