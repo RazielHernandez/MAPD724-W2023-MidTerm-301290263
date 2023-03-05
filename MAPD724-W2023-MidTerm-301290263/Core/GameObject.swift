@@ -1,6 +1,12 @@
 import GameplayKit
 import SpriteKit
 
+//
+//  GameObject
+//  Implements GameProtocol
+//  Define the variables for all the game objects
+//  The variables are used to implmenet the behaviour like movement and collision detection
+//
 class GameObject : SKSpriteNode, GameProtocol
 {
     

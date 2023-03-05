@@ -1,6 +1,10 @@
 import GameplayKit
 import SpriteKit
 
+//
+//  Collision Manager
+//  Detect Collision between the player and the gameobjects (Island an clouds)
+//
 class CollisionManager
 {
     // get a reference to the GameViewController

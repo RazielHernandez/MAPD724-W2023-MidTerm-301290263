@@ -7,6 +7,11 @@
 
 import GameplayKit
 
+//
+//  Enum Layer
+//  Used to set the layer in Z axis
+//
+//
 enum Layer : CGFloat{
     case ocean = 0, island = 1, plane = 2, cloud = 3
 }
